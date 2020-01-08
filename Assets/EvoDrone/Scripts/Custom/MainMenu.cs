@@ -8,8 +8,6 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt("score", 0);
-        PlayerPrefs.Save();
         levelManager = GameObject.FindObjectOfType<LevelManager>();
     }
 
