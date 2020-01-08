@@ -50,12 +50,6 @@ public class Player : MonoBehaviour
         scoreGameOver.text = score.text;
         GameOver_Header.SetActive(true);
         GameOver.SetActive(true);
-
-        //StartCoroutine(ShowGameOverCoroutine());
-    }
-    IEnumerator ShowGameOverCoroutine()
-    {
-        yield return new WaitForSeconds(2.0f);
     }
 
     //'Player's' destruction procedure
