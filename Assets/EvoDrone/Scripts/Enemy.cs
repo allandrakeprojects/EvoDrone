@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// This script defines 'Enemy's' health and behavior. 
@@ -20,11 +21,20 @@ public class Enemy : MonoBehaviour {
     
     [HideInInspector] public int shotChance; //probability of 'Enemy's' shooting during tha path
     [HideInInspector] public float shotTimeMin, shotTimeMax; //max and min time for shooting from the beginning of the path
+    
+    static Text coinCountText;
+    static Text scoreText;
     #endregion
 
     private void Start()
     {
         Invoke("ActivateShooting", Random.Range(shotTimeMin, shotTimeMax));
+
+        if (coinCountText == null)
+        {
+            coinCountText = GameObject.Find("Score_Count").GetComponentInChildren<Text>();
+            scoreText = GameObject.Find("Score").GetComponentInChildren<Text>();
+        }
     }
 
     //coroutine making a shot
@@ -58,10 +68,27 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    private int asd = 0;
     //method of destroying the 'Enemy'
-    void Destruction()                           
-    {        
+    void Destruction()
+    {
+        int getCurrentScore = PlayerPrefs.GetInt("score");
+        getCurrentScore += 1;
+        coinCountText.text = getCurrentScore.ToString();
+        PlayerPrefs.SetInt("score", getCurrentScore);
+        PlayerPrefs.Save();
+        NewBest(getCurrentScore);
+
         Instantiate(destructionVFX, transform.position, Quaternion.identity); 
         Destroy(gameObject);
+    }
+
+    public void NewBest(int score)
+    {
+        int highscore = PlayerPrefs.GetInt("highscore");
+        if (score > highscore)
+        {
+            scoreText.text = "NEW BEST";
+        }
     }
 }
