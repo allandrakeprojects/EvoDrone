@@ -213,10 +213,7 @@ public class MainMenu : MonoBehaviour
         AddMinusCoin(int.Parse(DecryptCoin(FirepowerCoin.text)), 1);
         Powerups();
     }
-
-
-
-
+    
     public void Powerups()
     {
         firerate();
