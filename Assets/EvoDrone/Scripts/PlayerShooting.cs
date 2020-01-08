@@ -43,46 +43,6 @@ public class PlayerShooting : MonoBehaviour {
         guns.leftGunVFX = guns.leftGun.GetComponent<ParticleSystem>();
         guns.rightGunVFX = guns.rightGun.GetComponent<ParticleSystem>();
         guns.centralGunVFX = guns.centralGun.GetComponent<ParticleSystem>();
-
-        UpdateFirerate();
-        UpdateFirepower();
-    }
-
-
-    public void UpdateFirerate()
-    {
-        float DEFAULT_VAL = 3.3f;
-        float LOOP_VAL = .2f;
-        if (PlayerPrefs.GetInt("firerate_lvl", 1) == 1)
-        {
-
-            PlayerPrefs.SetInt("firerate_lvl", 1);
-            PlayerPrefs.Save();
-        }
-        else
-        {
-            int lvl = PlayerPrefs.GetInt("firerate_lvl");
-            float new_default_val = (lvl * LOOP_VAL) + DEFAULT_VAL;
-            fireRate = new_default_val;
-        }
-    }
-
-    public void UpdateFirepower()
-    {
-        int DEFAULT_VAL = 0;
-        int LOOP_VAL = 1;
-        if (PlayerPrefs.GetInt("firepower_lvl", 1) == 1)
-        {
-
-            PlayerPrefs.SetInt("firepower_lvl", 1);
-            PlayerPrefs.Save();
-        }
-        else
-        {
-            int lvl = PlayerPrefs.GetInt("firepower_lvl");
-            int new_default_val = (lvl * LOOP_VAL) + DEFAULT_VAL;
-            weaponPower = new_default_val;
-        }
     }
 
     private void Update()

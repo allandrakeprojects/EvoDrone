@@ -1298,16 +1298,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f364fe44d7288340b7aea75e78652c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Coin: {fileID: 0}
-  Best: {fileID: 0}
-  ClaimCoinButton: {fileID: 0}
-  ClaimWaitMinutes: {fileID: 0}
-  FirerateLvl: {fileID: 0}
-  FirerateButton: {fileID: 0}
-  FirerateCoin: {fileID: 0}
-  FirepowerLvl: {fileID: 0}
-  FirepowerButton: {fileID: 0}
-  FirepowerCoin: {fileID: 0}
 --- !u!1 &1763808264
 GameObject:
   m_ObjectHideFlags: 0
