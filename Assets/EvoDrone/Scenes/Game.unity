@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 231610639}
   - component: {fileID: 231610638}
   m_Layer: 5
-  m_Name: Home
+  m_Name: Lobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1526,7 +1526,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Home
+  m_Text: Lobby
 --- !u!222 &1953127870
 CanvasRenderer:
   m_ObjectHideFlags: 0
