@@ -29,7 +29,7 @@ public class MainMenu : MonoBehaviour
         Powerups();
 
         PlayerPrefs.SetInt("score", 0);
-        PlayerPrefs.SetInt("current_level", 0);
+        PlayerPrefs.SetInt("current_level", 1);
         PlayerPrefs.Save();
 
         levelManager = GameObject.FindObjectOfType<LevelManager>();

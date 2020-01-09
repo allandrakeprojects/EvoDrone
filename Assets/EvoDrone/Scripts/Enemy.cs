@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour {
     //method of destroying the 'Enemy'
     void Destruction()
     {
-        int coinCount = 2;
+        int coinCount = 1;
 
         for (int i = 0; i < coinCount; ++i)
         {

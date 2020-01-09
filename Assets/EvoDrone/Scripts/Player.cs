@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 
     public static Player instance;
     private static Text score;
+    public Text Score_Text_Header;
     public Text scoreText;
 
     private void Awake()
@@ -36,21 +37,20 @@ public class Player : MonoBehaviour
     //method for damage proceccing by 'Player'
     public void GetDamage(int damage)
     {
-        if (OnPlayerDied != null)
-        {
-            OnPlayerDied();
-        }
+        //if (OnPlayerDied != null)
+        //{
+        //    OnPlayerDied();
+        //}
 
-        Destruction();
-        ShowDeathScreen();
+        //Destruction();
+        //ShowDeathScreen();
     }
 
     public void ShowDeathScreen()
     {
         score = GameObject.Find("Score_Count").GetComponentInChildren<Text>();
-        int highscore = PlayerPrefs.GetInt("highscore");
         int getCurrentScore = PlayerPrefs.GetInt("score");
-        if (getCurrentScore > highscore)
+        if (Score_Text_Header.text.ToLower() == "new best")
         {
             scoreText.text = "NEW BEST";
             PlayerPrefs.SetInt("highscore", getCurrentScore);
@@ -78,7 +78,6 @@ public class Player : MonoBehaviour
         {
             if (OnGainCoin != null)
             {
-                print("COINASDASdsadasdads");
                 OnGainCoin();
             }
 
