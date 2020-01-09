@@ -33,11 +33,11 @@ public class LevelController : MonoBehaviour {
     {
         mainCamera = Camera.main;
         //for each element in 'enemyWaves' array creating coroutine which generates the wave
-        for (int i = 0; i<enemyWaves.Length; i++) 
-        {
-            StartCoroutine(CreateEnemyWave(enemyWaves[i].timeToStart, enemyWaves[i].wave));
-        }
-        StartCoroutine(PowerupBonusCreation());
+        //for (int i = 0; i<enemyWaves.Length; i++) 
+        //{
+        //    StartCoroutine(CreateEnemyWave(enemyWaves[i].timeToStart, enemyWaves[i].wave));
+        //}
+        //StartCoroutine(PowerupBonusCreation());
         StartCoroutine(PlanetsCreation());
     }
     
@@ -69,12 +69,12 @@ public class LevelController : MonoBehaviour {
 
     IEnumerator PlanetsCreation()
     {
-        //Create a new list copying the arrey
+        //Create a new list copying the array
         for (int i = 0; i < planets.Length; i++)
         {
             planetsList.Add(planets[i]);
         }
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(4);
         while (true)
         {
             ////choose random object from the list, generate and delete it

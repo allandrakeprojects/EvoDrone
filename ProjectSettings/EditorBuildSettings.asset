@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/EvoDrone/Scenes/Start_Menu.unity
-    guid: f803165674d31a540918aaf6cf55e481
-  - enabled: 1
     path: Assets/EvoDrone/Scenes/Main_Menu.unity
     guid: d9e279eeaf8a3c94086e649cb19e4c61
   - enabled: 1

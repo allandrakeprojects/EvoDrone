@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,9 +28,18 @@ public class Projectile : MonoBehaviour {
         }
         else if (!enemyBullet && collision.tag == "Enemy")
         {
-            collision.GetComponent<Enemy>().GetDamage(damage);
-            if (destroyedByCollision)
-                Destruction();
+            try
+            {
+                collision.GetComponent<Enemy>().GetDamage(damage);
+                if (destroyedByCollision)
+                    Destruction();
+            }
+            catch (Exception err)
+            {
+                collision.GetComponent<Boss>().GetDamage(damage);
+                if (destroyedByCollision)
+                    Destruction();
+            }
         }
     }
 

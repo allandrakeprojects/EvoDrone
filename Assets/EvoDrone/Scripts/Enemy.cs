@@ -21,20 +21,30 @@ public class Enemy : MonoBehaviour {
     
     [HideInInspector] public int shotChance; //probability of 'Enemy's' shooting during tha path
     [HideInInspector] public float shotTimeMin, shotTimeMax; //max and min time for shooting from the beginning of the path
-    
-    static Text coinCountText;
-    static Text scoreText;
     #endregion
+
+    [SerializeField] private Coin coin;
+
+    private float enemySpeed = 5f;
+
+    public void Update()
+    {
+        transform.Translate(Vector2.down * enemySpeed * Time.deltaTime);
+
+        if (transform.position.y + transform.localScale.y <= GameManager.bottomLeft.y)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void SetSpeed(int speed)
+    {
+        enemySpeed = speed;
+    }
 
     private void Start()
     {
         Invoke("ActivateShooting", Random.Range(shotTimeMin, shotTimeMax));
-
-        if (coinCountText == null)
-        {
-            coinCountText = GameObject.Find("Score_Count").GetComponentInChildren<Text>();
-            scoreText = GameObject.Find("Score").GetComponentInChildren<Text>();
-        }
     }
 
     //coroutine making a shot
@@ -72,23 +82,14 @@ public class Enemy : MonoBehaviour {
     //method of destroying the 'Enemy'
     void Destruction()
     {
-        int getCurrentScore = PlayerPrefs.GetInt("score");
-        getCurrentScore += 1;
-        coinCountText.text = getCurrentScore.ToString();
-        PlayerPrefs.SetInt("score", getCurrentScore);
-        PlayerPrefs.Save();
-        NewBest(getCurrentScore);
+        int coinCount = 2;
+
+        for (int i = 0; i < coinCount; ++i)
+        {
+            Instantiate(coin, transform.position, Quaternion.identity);
+        }
 
         Instantiate(destructionVFX, transform.position, Quaternion.identity); 
         Destroy(gameObject);
-    }
-
-    public void NewBest(int score)
-    {
-        int highscore = PlayerPrefs.GetInt("highscore");
-        if (score > highscore)
-        {
-            scoreText.text = "NEW BEST";
-        }
     }
 }
