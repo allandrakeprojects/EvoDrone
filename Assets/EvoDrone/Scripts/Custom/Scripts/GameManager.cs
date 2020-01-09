@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // leave blank
+            Instantiate(boss_05, bossPos, Quaternion.identity, transform);
         }
         
         Boss.instance.OnBossDied += HandleBossDeath;
@@ -246,7 +246,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // leave blank
+            Instantiate(wave_06);
         }
     }
 
@@ -264,11 +264,23 @@ public class GameManager : MonoBehaviour
             int current_level = PlayerPrefs.GetInt("current_level");
             if (current_level == 2 || current_level == 3 || current_level == 4)
             {
-                int rand = Random.Range(1, 3);
-                if (rand == 1)
+                if (current_level == 4)
                 {
-                    GenerateDefaultWave();
+                    int rand = Random.Range(1, 2);
+                    if (rand == 1)
+                    {
+                        GenerateDefaultWave();
+                    }
                 }
+                else
+                {
+                    int rand = Random.Range(1, 4);
+                    if (rand == 1)
+                    {
+                        GenerateDefaultWave();
+                    }
+                }
+
             }
             else if (current_level == 5 || current_level == 6)
             {

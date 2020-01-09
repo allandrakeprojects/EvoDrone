@@ -37,13 +37,13 @@ public class Player : MonoBehaviour
     //method for damage proceccing by 'Player'
     public void GetDamage(int damage)
     {
-        //if (OnPlayerDied != null)
-        //{
-        //    OnPlayerDied();
-        //}
+        if (OnPlayerDied != null)
+        {
+            OnPlayerDied();
+        }
 
-        //Destruction();
-        //ShowDeathScreen();
+        Destruction();
+        ShowDeathScreen();
     }
 
     public void ShowDeathScreen()
