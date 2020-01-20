@@ -67,7 +67,7 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, Time.deltaTime * 5f);
+        transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, Time.deltaTime * 3f);
     }
 
     //coroutine making a shot

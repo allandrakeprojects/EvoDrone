@@ -24,17 +24,24 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public GameObject wave;
 
+
+    [SerializeField]
+    public GameObject PlayerDrone;
+
     [SerializeField]
     static Text coinCountText;
     [SerializeField]
     static Text scoreText;
+
+    [SerializeField]
+    public Text finishText;
 
     public static Vector2 bottomLeft;
     public static Vector2 topRight;
 
     private int coins = 0;
 
-    private int monsterWaveCount = 8;
+    private int monsterWaveCount = 5;
     private int wavesLeft;
     private float monsterSpeed = 2;
 
@@ -50,6 +57,18 @@ public class GameManager : MonoBehaviour
     public GameObject wave_05;
     [SerializeField]
     public GameObject wave_06;
+
+    private float timer = 0.0f;
+
+
+    public GameObject Score_Count;
+    public GameObject Score_Text;
+
+    public GameObject Finish_Header;
+    public GameObject Finish;
+
+    private static Text score;
+    public Text Score_Text_Header;
 
     void Start()
     {
@@ -71,55 +90,102 @@ public class GameManager : MonoBehaviour
         
         wavesLeft = monsterWaveCount;
 
-        StartEnemyGeneration();
-    }
 
-    private float timer = 0.0f;
-
-    public void Update()
-    {
-        timer += Time.deltaTime;
-
-        string minutes = Mathf.Floor(timer / 60).ToString("00");
-        string seconds = (timer % 60).ToString("00");
-
-        //string time = string.Format("{0}:{1}", minutes, seconds);
-        string get_time = minutes +  "" + seconds;
-        int time = int.Parse(get_time);
-
-        if (time > 0500)
+        string playmode = PlayerPrefs.GetString("playmode");
+        if (playmode == "endless")
         {
-            print("level 6 " + time);
-            PlayerPrefs.SetInt("current_level", 6);
-            PlayerPrefs.Save();
-        }
-        else if (time > 0400)
-        {
-            print("level 5 " + time);
-            PlayerPrefs.SetInt("current_level", 5);
-            PlayerPrefs.Save();
-        }
-        else if (time > 0300)
-        {
-            print("level 4 " + time);
-            PlayerPrefs.SetInt("current_level", 4);
-            PlayerPrefs.Save();
-        }
-        else if (time > 0200)
-        {
-            print("level 3 " + time);
-            PlayerPrefs.SetInt("current_level", 3);
-            PlayerPrefs.Save();
-        }
-        else if (time > 0100)
-        {
-            print("level 2 " + time);
-            PlayerPrefs.SetInt("current_level", 2);
-            PlayerPrefs.Save();
+            timer = 0.0f;
         }
         else
         {
-            print("level 1 " + time);
+            int selected_level = PlayerPrefs.GetInt("selected_level");
+
+            if (selected_level == 1)
+            {
+                timer = 0.0f;
+                wavesLeft = 1;
+            }
+            else if (selected_level == 2)
+            {
+                timer = 60.0f;
+                wavesLeft = 1;
+                PlayerPrefs.SetInt("current_level", 2);
+                PlayerPrefs.Save();
+            }
+            else if (selected_level == 3)
+            {
+                timer = 120.0f;
+                wavesLeft = 1;
+                PlayerPrefs.SetInt("current_level", 3);
+                PlayerPrefs.Save();
+            }
+            else if (selected_level == 4)
+            {
+                timer = 180.0f;
+                wavesLeft = 1;
+                PlayerPrefs.SetInt("current_level", 4);
+                PlayerPrefs.Save();
+            }
+            else if (selected_level == 5)
+            {
+                timer = 240.0f;
+                wavesLeft = 1;
+                PlayerPrefs.SetInt("current_level", 5);
+                PlayerPrefs.Save();
+            }
+        }
+        
+        StartEnemyGeneration();
+    }
+
+    public void Update()
+    {
+        string playmode = PlayerPrefs.GetString("playmode");
+        if (playmode == "endless")
+        {
+            timer += Time.deltaTime;
+
+            string minutes = Mathf.Floor(timer / 60).ToString("00");
+            string seconds = (timer % 60).ToString("00");
+
+            //string time = string.Format("{0}:{1}", minutes, seconds);
+            string get_time = minutes + "" + seconds;
+            int time = int.Parse(get_time);
+
+            if (time > 0500)
+            {
+                //print("level 6 " + time + " --- " + timer);
+                PlayerPrefs.SetInt("current_level", 6);
+                PlayerPrefs.Save();
+            }
+            else if (time > 0400)
+            {
+                //print("level 5 " + time + " --- " + timer);
+                PlayerPrefs.SetInt("current_level", 5);
+                PlayerPrefs.Save();
+            }
+            else if (time > 0300)
+            {
+                //print("level 4 " + time + " --- " + timer);
+                PlayerPrefs.SetInt("current_level", 4);
+                PlayerPrefs.Save();
+            }
+            else if (time > 0200)
+            {
+                //print("level 3 " + time + " --- " + timer);
+                PlayerPrefs.SetInt("current_level", 3);
+                PlayerPrefs.Save();
+            }
+            else if (time > 0100)
+            {
+                //print("level 2 " + time + " --- " + timer);
+                PlayerPrefs.SetInt("current_level", 2);
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                //print("level 1 " + time + " --- " + timer);
+            }
         }
     }
 
@@ -139,11 +205,69 @@ public class GameManager : MonoBehaviour
 
     public void HandleBossDeath()
     {
-        monsterSpeed++;
-        monsterWaveCount+=2;
-        wavesLeft = monsterWaveCount;
+        string playmode = PlayerPrefs.GetString("playmode");
+        if (playmode == "endless")
+        {
+            monsterSpeed++;
+            monsterWaveCount += 2;
+            wavesLeft = monsterWaveCount;
 
-        StartEnemyGeneration();
+            StartEnemyGeneration();
+        }
+        else
+        {
+            int level = PlayerPrefs.GetInt("level");
+            int selected_level = PlayerPrefs.GetInt("selected_level");
+
+            if (level == selected_level)
+            {
+                if (level != 5)
+                {
+                    level += 1;
+                    PlayerPrefs.SetInt("level", level);
+                    PlayerPrefs.Save();
+
+                    finishText.text = "LEVEL PASSED";
+                }
+                else
+                {
+                    // show win
+                    finishText.text = "MAX LEVEL";
+                }
+            }
+            else
+            {
+                finishText.text = "LEVEL PASSED";
+            }
+
+            Invoke("ShowFinishScreen", 3f);
+        }
+    }
+
+    public void ShowFinishScreen()
+    {
+        PlayerDrone.SetActive(false);
+
+        score = GameObject.Find("Score_Count").GetComponentInChildren<Text>();
+        int getCurrentScore = PlayerPrefs.GetInt("score");
+        if (Score_Text_Header.text.ToLower() == "new best")
+        {
+            scoreText.text = "NEW BEST";
+            PlayerPrefs.SetInt("highscore", getCurrentScore);
+            PlayerPrefs.Save();
+        }
+        Score_Count.SetActive(false);
+        Score_Text.SetActive(false);
+
+        Text scoreFinish = Finish.GetComponentInChildren<Text>();
+        scoreFinish.text = score.text;
+        Finish_Header.SetActive(true);
+        Finish.SetActive(true);
+
+        int new_coin = PlayerPrefs.GetInt("coin");
+        new_coin += int.Parse(score.text);
+        PlayerPrefs.SetInt("coin", new_coin);
+        PlayerPrefs.Save();
     }
 
     public void NewBest(int score)
@@ -186,32 +310,55 @@ public class GameManager : MonoBehaviour
     {
         Vector2 bossPos = new Vector2(0, topRight.y);
 
-        int rand = Random.Range(1, 6);
-        if (rand == 1)
+        int selected_level = PlayerPrefs.GetInt("selected_level");
+
+        if (selected_level == 1)
         {
             Instantiate(boss_01, bossPos, Quaternion.identity, transform);
         }
-        else if (rand == 2)
+        else if (selected_level == 2)
         {
             Instantiate(boss_02, bossPos, Quaternion.identity, transform);
         }
-        else if (rand == 3)
+        else if (selected_level == 3)
         {
             Instantiate(boss_03, bossPos, Quaternion.identity, transform);
         }
-        else if (rand == 4)
+        else if (selected_level == 4)
         {
             Instantiate(boss_04, bossPos, Quaternion.identity, transform);
         }
-        else if (rand == 5)
+        else if (selected_level == 5)
         {
             Instantiate(boss_05, bossPos, Quaternion.identity, transform);
         }
-        else
-        {
-            Instantiate(boss_05, bossPos, Quaternion.identity, transform);
-        }
-        
+
+        //int rand = Random.Range(1, 6);
+        //if (rand == 1)
+        //{
+        //    Instantiate(boss_01, bossPos, Quaternion.identity, transform);
+        //}
+        //else if (rand == 2)
+        //{
+        //    Instantiate(boss_02, bossPos, Quaternion.identity, transform);
+        //}
+        //else if (rand == 3)
+        //{
+        //    Instantiate(boss_03, bossPos, Quaternion.identity, transform);
+        //}
+        //else if (rand == 4)
+        //{
+        //    Instantiate(boss_04, bossPos, Quaternion.identity, transform);
+        //}
+        //else if (rand == 5)
+        //{
+        //    Instantiate(boss_05, bossPos, Quaternion.identity, transform);
+        //}
+        //else
+        //{
+        //    Instantiate(boss_05, bossPos, Quaternion.identity, transform);
+        //}
+
         Boss.instance.OnBossDied += HandleBossDeath;
     }
 
@@ -252,10 +399,23 @@ public class GameManager : MonoBehaviour
 
     public void GenerateWave()
     {
+        print(wavesLeft);
         if (wavesLeft == 0)
         {
             CancelInvoke();
-            Invoke("GenerateBoss", 5f);
+
+            string playmode = PlayerPrefs.GetString("playmode");
+            if (playmode == "endless")
+            {
+                monsterSpeed++;
+                monsterWaveCount += 2;
+                wavesLeft = monsterWaveCount;
+                Invoke("StartEnemyGeneration", 5f);
+            }
+            else
+            {
+                Invoke("GenerateBoss", 5f);
+            }
         }
         else
         {

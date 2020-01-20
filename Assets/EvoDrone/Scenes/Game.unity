@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 314614398}
   - component: {fileID: 314614397}
   m_Layer: 5
-  m_Name: Gameover_Text
+  m_Name: Finish_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,7 +311,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gameover
+  m_Text: GAMEOVER
 --- !u!222 &314614398
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 472027690}
   - component: {fileID: 472027689}
   m_Layer: 5
-  m_Name: GameOver_Header
+  m_Name: Finish_Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -551,8 +551,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.5, y: 151.30002}
-  m_SizeDelta: {x: 359.7, y: 102.3}
+  m_AnchoredPosition: {x: -0.0000095367, y: 151.30002}
+  m_SizeDelta: {x: 471.6, y: 102.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &472027689
 MonoBehaviour:
@@ -603,7 +603,7 @@ GameObject:
   - component: {fileID: 588875016}
   - component: {fileID: 588875015}
   m_Layer: 5
-  m_Name: GameOver
+  m_Name: Finish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1227,6 +1227,13 @@ MonoBehaviour:
   FirepowerLvl: {fileID: 0}
   FirepowerButton: {fileID: 0}
   FirepowerCoin: {fileID: 0}
+  gameMode: {fileID: 0}
+  storyMode: {fileID: 0}
+  Level_01: {fileID: 0}
+  Level_02: {fileID: 0}
+  Level_03: {fileID: 0}
+  Level_04: {fileID: 0}
+  Level_05: {fileID: 0}
 --- !u!1 &1763808264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,12 +1350,19 @@ MonoBehaviour:
   boss_05: {fileID: 950655605575473471, guid: 1886631212e962549a05bd9cbb16debe, type: 3}
   enemy: {fileID: 114339271854877628, guid: fdaaab53a8b4c0143b19d2a2e4007e44, type: 3}
   wave: {fileID: 7726804275551888793, guid: a656993aa243a734d91d9c9d675b530c, type: 3}
+  PlayerDrone: {fileID: 7012023652457593819}
+  finishText: {fileID: 314614397}
   wave_01: {fileID: 1947974370059188, guid: 318d55ffb775da9468ebdb13dc56bb30, type: 3}
   wave_02: {fileID: 1692215992462570, guid: 15eadeed59ef1574896dd15b62c0ff3c, type: 3}
   wave_03: {fileID: 1945754960637166, guid: 667129e9a76b0bf4095966e1592dfe5b, type: 3}
   wave_04: {fileID: 1254980403870950, guid: 8d5ec165f323f6c448c6897268785a2a, type: 3}
   wave_05: {fileID: 1177001650480530, guid: e64040bc8d8b82c45a9297ac9699e081, type: 3}
   wave_06: {fileID: 1643244333601292, guid: d5985777a604bf240a36957329db29c1, type: 3}
+  Score_Count: {fileID: 1247111444}
+  Score_Text: {fileID: 730799695}
+  Finish_Header: {fileID: 472027687}
+  Finish: {fileID: 588875013}
+  Score_Text_Header: {fileID: 1763808266}
 --- !u!4 &1872729183
 Transform:
   m_ObjectHideFlags: 0
@@ -1686,3 +1700,9 @@ PrefabInstance:
       objectReference: {fileID: 730799697}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e33fda0c220936498f5288af83d7450, type: 3}
+--- !u!1 &7012023652457593819 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1510184446397956, guid: 8e33fda0c220936498f5288af83d7450,
+    type: 3}
+  m_PrefabInstance: {fileID: 7012023652457593818}
+  m_PrefabAsset: {fileID: 0}

@@ -63,6 +63,11 @@ public class Player : MonoBehaviour
         scoreGameOver.text = score.text;
         GameOver_Header.SetActive(true);
         GameOver.SetActive(true);
+
+        int new_coin = PlayerPrefs.GetInt("coin");
+        new_coin += int.Parse(score.text);
+        PlayerPrefs.SetInt("coin", new_coin);
+        PlayerPrefs.Save();
     }
 
     //'Player's' destruction procedure

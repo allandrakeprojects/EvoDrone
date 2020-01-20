@@ -21,6 +21,15 @@ public class MainMenu : MonoBehaviour
     public Button FirepowerButton;
     public Text FirepowerCoin;
 
+    public GameObject gameMode;
+    public GameObject storyMode;
+
+    public Button Level_01;
+    public Button Level_02;
+    public Button Level_03;
+    public Button Level_04;
+    public Button Level_05;
+
     void Start()
     {
         ShowCoin();
@@ -35,9 +44,174 @@ public class MainMenu : MonoBehaviour
         levelManager = GameObject.FindObjectOfType<LevelManager>();
     }
 
-    public void PLAYGAME()
+    public void StoryModeLevel()
     {
+        if (PlayerPrefs.GetInt("level", 1) == 1)
+        {
+            // level 1
+            PlayerPrefs.SetInt("level", 1);
+            PlayerPrefs.Save();
+
+            LockLevel(Level_02);
+            LockLevel(Level_03);
+            LockLevel(Level_04);
+            LockLevel(Level_05);
+        }
+        else
+        {
+            int level = PlayerPrefs.GetInt("level");
+
+            if (level == 2)
+            {
+                UnlockLevel(Level_02);
+
+                LockLevel(Level_03);
+                LockLevel(Level_04);
+                LockLevel(Level_05);
+            }
+            else if (level == 3)
+            {
+                UnlockLevel(Level_02);
+                UnlockLevel(Level_03);
+
+                LockLevel(Level_04);
+                LockLevel(Level_05);
+            }
+            else if (level == 4)
+            {
+                UnlockLevel(Level_02);
+                UnlockLevel(Level_03);
+                UnlockLevel(Level_04);
+
+                LockLevel(Level_05);
+            }
+            else if (level == 5)
+            {
+                UnlockLevel(Level_02);
+                UnlockLevel(Level_03);
+                UnlockLevel(Level_04);
+                UnlockLevel(Level_05);
+            }
+        }
+    }
+
+    private void UnlockLevel(Button level)
+    {
+        GameObject lock_ = level.transform.GetChild(1).gameObject;
+        GameObject unlock_ = level.transform.GetChild(2).gameObject;
+
+        lock_.SetActive(false);
+        unlock_.SetActive(true);
+    }
+
+    private void LockLevel(Button level)
+    {
+        GameObject lock_ = level.transform.GetChild(1).gameObject;
+        GameObject unlock_ = level.transform.GetChild(2).gameObject;
+
+        lock_.SetActive(true);
+        unlock_.SetActive(false);
+    }
+
+    public void viewGameMode()
+    {
+        StoryModeLevel();
+        gameMode.SetActive(true);
+    }
+
+    public void hideGameMode()
+    {
+        if (storyMode.active)
+        {
+            storyMode.SetActive(false);
+        }
+        else
+        {
+            gameMode.SetActive(false);
+        }
+    }
+
+    public void viewStoryMode()
+    {
+        storyMode.SetActive(true);
+    }
+
+    public void hideStoryMode()
+    {
+        storyMode.SetActive(false);
+    }
+
+    public void PLAYGAME_ENDLESS()
+    {
+        PlayerPrefs.SetString("playmode", "endless");
+        PlayerPrefs.Save();
+
         levelManager.LoadGameAfterDelay();
+    }
+
+    public void PLAYGAME_STORY_01()
+    {
+        PlayerPrefs.SetString("playmode", "story");
+        PlayerPrefs.SetInt("selected_level", 01);
+        PlayerPrefs.Save();
+
+        levelManager.LoadGameAfterDelay();
+    }
+
+    public void PLAYGAME_STORY_02()
+    {
+        int level = PlayerPrefs.GetInt("level");
+
+        if (level >= 2)
+        {
+            PlayerPrefs.SetString("playmode", "story");
+            PlayerPrefs.SetInt("selected_level", 02);
+            PlayerPrefs.Save();
+
+            levelManager.LoadGameAfterDelay();
+        }
+    }
+
+    public void PLAYGAME_STORY_03()
+    {
+        int level = PlayerPrefs.GetInt("level");
+
+        if (level >= 3)
+        {
+            PlayerPrefs.SetString("playmode", "story");
+            PlayerPrefs.SetInt("selected_level", 03);
+            PlayerPrefs.Save();
+
+            levelManager.LoadGameAfterDelay();
+        }
+    }
+
+    public void PLAYGAME_STORY_04()
+    {
+        int level = PlayerPrefs.GetInt("level");
+
+        if (level >= 4)
+        {
+            PlayerPrefs.SetString("playmode", "story");
+            PlayerPrefs.SetInt("selected_level", 04);
+            PlayerPrefs.Save();
+
+            levelManager.LoadGameAfterDelay();
+        }
+    }
+
+    public void PLAYGAME_STORY_05()
+    {
+        int level = PlayerPrefs.GetInt("level");
+
+        if (level >= 5)
+        {
+            PlayerPrefs.SetString("playmode", "story");
+            PlayerPrefs.SetInt("selected_level", 05);
+            PlayerPrefs.Save();
+
+            levelManager.LoadGameAfterDelay();
+        }
     }
 
     public void OpenMainMenu()
