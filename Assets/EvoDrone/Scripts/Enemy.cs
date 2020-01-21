@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 /// <summary>
 /// This script defines 'Enemy's' health and behavior. 
@@ -26,6 +23,8 @@ public class Enemy : MonoBehaviour {
     [SerializeField] private Coin coin;
 
     private float enemySpeed = 5f;
+
+    public AudioClip explosionClip;
 
     public void Update()
     {
@@ -82,6 +81,12 @@ public class Enemy : MonoBehaviour {
     //method of destroying the 'Enemy'
     void Destruction()
     {
+        int muted_sound = PlayerPrefs.GetInt("Muted_Sound");
+        if (muted_sound == 1)
+        {
+            AudioSource.PlayClipAtPoint(explosionClip, transform.position);
+        }
+
         int coinCount = 1;
 
         for (int i = 0; i < coinCount; ++i)
@@ -89,7 +94,7 @@ public class Enemy : MonoBehaviour {
             Instantiate(coin, transform.position, Quaternion.identity);
         }
 
-        Instantiate(destructionVFX, transform.position, Quaternion.identity); 
+        Instantiate(destructionVFX, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

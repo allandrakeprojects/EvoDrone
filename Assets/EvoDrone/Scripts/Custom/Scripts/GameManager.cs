@@ -70,6 +70,26 @@ public class GameManager : MonoBehaviour
     private static Text score;
     public Text Score_Text_Header;
 
+    [Header("Music Clip")]
+    public AudioClip introClip;
+    public AudioClip endlessClip;
+    public AudioClip level1Clip;
+    public AudioClip level2Clip;
+    public AudioClip level3Clip;
+    public AudioClip level4Clip;
+    public AudioClip level5Clip;
+
+    [Header("Music")]
+    public AudioSource introAS;
+    public AudioSource endlessAS;
+    public AudioSource level1AS;
+    public AudioSource level2AS;
+    public AudioSource level3AS;
+    public AudioSource level4AS;
+    public AudioSource level5AS;
+
+    private bool detectStartPlaying = false;
+
     void Start()
     {
         if (coinCountText == null)
@@ -90,6 +110,9 @@ public class GameManager : MonoBehaviour
         
         wavesLeft = monsterWaveCount;
 
+        //intro music
+        introAS.PlayOneShot(introClip);
+        detectStartPlaying = true;
 
         string playmode = PlayerPrefs.GetString("playmode");
         if (playmode == "endless")
@@ -103,43 +126,88 @@ public class GameManager : MonoBehaviour
             if (selected_level == 1)
             {
                 timer = 0.0f;
-                wavesLeft = 1;
+                wavesLeft = 10;
             }
             else if (selected_level == 2)
             {
                 timer = 60.0f;
-                wavesLeft = 1;
+                wavesLeft = 20;
                 PlayerPrefs.SetInt("current_level", 2);
                 PlayerPrefs.Save();
             }
             else if (selected_level == 3)
             {
                 timer = 120.0f;
-                wavesLeft = 1;
+                wavesLeft = 30;
                 PlayerPrefs.SetInt("current_level", 3);
                 PlayerPrefs.Save();
             }
             else if (selected_level == 4)
             {
                 timer = 180.0f;
-                wavesLeft = 1;
+                wavesLeft = 40;
                 PlayerPrefs.SetInt("current_level", 4);
                 PlayerPrefs.Save();
             }
             else if (selected_level == 5)
             {
                 timer = 240.0f;
-                wavesLeft = 1;
+                wavesLeft = 50;
                 PlayerPrefs.SetInt("current_level", 5);
                 PlayerPrefs.Save();
             }
         }
-        
-        StartEnemyGeneration();
+
+        Invoke("StartEnemyGeneration", 5f);
     }
 
     public void Update()
     {
+        if (detectStartPlaying)
+        {
+            if (!introAS.isPlaying)
+            {
+                detectStartPlaying = false;
+
+                string playmode_ = PlayerPrefs.GetString("playmode");
+                if (playmode_ == "endless")
+                {
+                    endlessAS.loop = true;
+                    endlessAS.PlayOneShot(endlessClip);
+                }
+                else
+                {
+                    int selected_level = PlayerPrefs.GetInt("selected_level");
+                    if (selected_level == 1)
+                    {
+                        level1AS.loop = true;
+                        level1AS.PlayOneShot(level1Clip);
+                    }
+                    else if (selected_level == 2)
+                    {
+                        level2AS.loop = true;
+                        level2AS.PlayOneShot(level2Clip);
+                    }
+                    else if (selected_level == 3)
+                    {
+                        level3AS.loop = true;
+                        level3AS.PlayOneShot(level3Clip);
+                    }
+                    else if (selected_level == 4)
+                    {
+                        level4AS.loop = true;
+                        level4AS.PlayOneShot(level4Clip);
+                    }
+                    else if (selected_level == 5)
+                    {
+                        level5AS.loop = true;
+                        level5AS.PlayOneShot(level5Clip);
+                    }
+                }
+            }
+        }
+
+
         string playmode = PlayerPrefs.GetString("playmode");
         if (playmode == "endless")
         {

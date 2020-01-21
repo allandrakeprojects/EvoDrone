@@ -28,6 +28,14 @@ public class Player : MonoBehaviour
     public Text Score_Text_Header;
     public Text scoreText;
 
+    [Header("Music Clip")]
+    public AudioClip explosionClip;
+    public AudioClip coinClip;
+
+    [Header("Music")]
+    public AudioSource explosionAS;
+    public AudioSource coinAS;
+
     private void Awake()
     {
         if (instance == null) 
@@ -41,6 +49,8 @@ public class Player : MonoBehaviour
         {
             OnPlayerDied();
         }
+
+        explosionAS.PlayOneShot(explosionClip);
 
         Destruction();
         ShowDeathScreen();
@@ -81,6 +91,8 @@ public class Player : MonoBehaviour
     {
         if (other.transform.tag == "Coin")
         {
+            coinAS.PlayOneShot(coinClip);
+
             if (OnGainCoin != null)
             {
                 OnGainCoin();

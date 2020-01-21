@@ -36,6 +36,8 @@ public class Boss : MonoBehaviour
 
     [SerializeField] private Coin coin;
 
+    public AudioClip explosionClip;
+
     //private float enemySpeed = 5f;
 
     //public void Update()
@@ -93,6 +95,12 @@ public class Boss : MonoBehaviour
         health -= damage;           //reducing health for damage value, if health is less than 0, starting destruction procedure
         if (health <= 0)
         {
+            int muted_sound = PlayerPrefs.GetInt("Muted_Sound");
+            if (muted_sound == 1)
+            {
+                AudioSource.PlayClipAtPoint(explosionClip, transform.position);
+            }
+
             if (OnBossDied != null)
             {
                 OnBossDied();

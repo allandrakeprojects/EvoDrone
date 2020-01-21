@@ -31,6 +31,12 @@ public class PlayerShooting : MonoBehaviour {
     bool shootingIsActive = true; 
     [HideInInspector] public int maxweaponPower = 4; 
     public static PlayerShooting instance;
+    
+    [Header("Music Clip")]
+    public AudioClip shootClip;
+
+    [Header("Music")]
+    public AudioSource shootAS;
 
     private void Awake()
     {
@@ -91,6 +97,7 @@ public class PlayerShooting : MonoBehaviour {
         {
             if (Time.time > nextFire)
             {
+                shootAS.PlayOneShot(shootClip);
                 MakeAShot();                                                         
                 nextFire = Time.time + 1 / fireRate;
             }
