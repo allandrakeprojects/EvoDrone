@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
                 if (playmode_ == "endless")
                 {
                     endlessAS.loop = true;
-                    endlessAS.PlayOneShot(endlessClip);
+                    endlessAS.Play();
                 }
                 else
                 {
@@ -181,27 +181,27 @@ public class GameManager : MonoBehaviour
                     if (selected_level == 1)
                     {
                         level1AS.loop = true;
-                        level1AS.PlayOneShot(level1Clip);
+                        level1AS.Play();
                     }
                     else if (selected_level == 2)
                     {
                         level2AS.loop = true;
-                        level2AS.PlayOneShot(level2Clip);
+                        level2AS.Play();
                     }
                     else if (selected_level == 3)
                     {
                         level3AS.loop = true;
-                        level3AS.PlayOneShot(level3Clip);
+                        level3AS.Play();
                     }
                     else if (selected_level == 4)
                     {
                         level4AS.loop = true;
-                        level4AS.PlayOneShot(level4Clip);
+                        level4AS.Play();
                     }
                     else if (selected_level == 5)
                     {
                         level5AS.loop = true;
-                        level5AS.PlayOneShot(level5Clip);
+                        level5AS.Play();
                     }
                 }
             }
