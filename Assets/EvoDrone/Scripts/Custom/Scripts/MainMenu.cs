@@ -146,7 +146,7 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetString("playmode", "endless");
         PlayerPrefs.Save();
 
-        levelManager.LoadGameAfterDelay();
+        //levelManager.LoadGameAfterDelay();
     }
 
     public void PLAYGAME_STORY_01()
@@ -155,7 +155,7 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetInt("selected_level", 01);
         PlayerPrefs.Save();
 
-        levelManager.LoadGameAfterDelay();
+        //levelManager.LoadGameAfterDelay();
     }
 
     public void PLAYGAME_STORY_02()
@@ -168,7 +168,7 @@ public class MainMenu : MonoBehaviour
             PlayerPrefs.SetInt("selected_level", 02);
             PlayerPrefs.Save();
 
-            levelManager.LoadGameAfterDelay();
+            //levelManager.LoadGameAfterDelay();
         }
     }
 
@@ -182,7 +182,7 @@ public class MainMenu : MonoBehaviour
             PlayerPrefs.SetInt("selected_level", 03);
             PlayerPrefs.Save();
 
-            levelManager.LoadGameAfterDelay();
+            //levelManager.LoadGameAfterDelay();
         }
     }
 
@@ -196,7 +196,7 @@ public class MainMenu : MonoBehaviour
             PlayerPrefs.SetInt("selected_level", 04);
             PlayerPrefs.Save();
 
-            levelManager.LoadGameAfterDelay();
+            //levelManager.LoadGameAfterDelay();
         }
     }
 
@@ -210,18 +210,18 @@ public class MainMenu : MonoBehaviour
             PlayerPrefs.SetInt("selected_level", 05);
             PlayerPrefs.Save();
 
-            levelManager.LoadGameAfterDelay();
+            //levelManager.LoadGameAfterDelay();
         }
     }
 
     public void OpenMainMenu()
     {
-        levelManager.LoadMainMenuAfterDelay();
+        //levelManager.LoadMainMenuAfterDelay();
     }
 
     public void Quit()
     {
-        levelManager.LoadQuitAfterDelay();
+        //levelManager.LoadQuitAfterDelay();
     }
 
     public void ShowBest()

@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1152134415
   m_SortingLayer: 4
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 3c6d6674bfcb5ac498628dff731a28f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -105,9 +105,8 @@ MonoBehaviour:
   shotTimeMin: 1
   shotTimeMax: 3
   coin: {fileID: 8700926878123057690, guid: 4740903d3c5bea445a2fce16755390c8, type: 3}
+  enemySpeed: 5
   explosionClip: {fileID: 8300000, guid: 19d3563509037dc40a403d17e2878ca2, type: 3}
-  explosionAS: {fileID: 7969334504368670562, guid: 803e54965426d7d4296c9b631bc5afe4,
-    type: 3}
 --- !u!58 &58425179734721642
 CircleCollider2D:
   m_ObjectHideFlags: 0

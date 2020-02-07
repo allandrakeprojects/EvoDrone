@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
     private int wavesLeft;
     private float monsterSpeed = 2;
 
+    public GameObject[] asteroids;
+
     [SerializeField]
     public GameObject wave_01;
     [SerializeField]
@@ -159,6 +161,7 @@ public class GameManager : MonoBehaviour
         }
 
         Invoke("StartEnemyGeneration", 5f);
+        InvokeRepeating("GenerateAsteroid", 5f, 10f);
     }
 
     public void Update()
@@ -462,6 +465,53 @@ public class GameManager : MonoBehaviour
         else
         {
             Instantiate(wave_06);
+        }
+    }
+
+    public void GenerateAsteroid()
+    {
+
+        int rand = Random.Range(1, 10);
+        print(rand);
+        if (rand == 1)
+        {
+            Instantiate(asteroids[0]);
+        }
+        else if (rand == 2)
+        {
+            Instantiate(asteroids[1]);
+        }
+        else if (rand == 3)
+        {
+            Instantiate(asteroids[2]);
+        }
+        else if (rand == 4)
+        {
+            Instantiate(asteroids[3]);
+        }
+        else if (rand == 5)
+        {
+            Instantiate(asteroids[4]);
+        }
+        else if (rand == 6)
+        {
+            Instantiate(asteroids[5]);
+        }
+        else if (rand == 7)
+        {
+            Instantiate(asteroids[6]);
+        }
+        else if (rand == 8)
+        {
+            Instantiate(asteroids[7]);
+        }
+        else if (rand == 9)
+        {
+            Instantiate(asteroids[8]);
+        }
+        else
+        {
+            Instantiate(asteroids[9]);
         }
     }
 

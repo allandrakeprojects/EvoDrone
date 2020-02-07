@@ -7,8 +7,8 @@ using UnityEngine;
 [System.Serializable]
 public class Guns
 {
-    public GameObject rightGun, leftGun, centralGun;
-    [HideInInspector] public ParticleSystem leftGunVFX, rightGunVFX, centralGunVFX; 
+    public GameObject rightGun, leftGun, centralGun, assistantGun;
+    [HideInInspector] public ParticleSystem leftGunVFX, rightGunVFX, centralGunVFX, assistantGunVFX; 
 }
 
 public class PlayerShooting : MonoBehaviour {
@@ -18,6 +18,8 @@ public class PlayerShooting : MonoBehaviour {
 
     [Tooltip("projectile prefab")]
     public GameObject projectileObject;
+
+    public GameObject assistantProjectileObject;
 
     //time for a new shot
     [HideInInspector] public float nextFire;
@@ -49,6 +51,7 @@ public class PlayerShooting : MonoBehaviour {
         guns.leftGunVFX = guns.leftGun.GetComponent<ParticleSystem>();
         guns.rightGunVFX = guns.rightGun.GetComponent<ParticleSystem>();
         guns.centralGunVFX = guns.centralGun.GetComponent<ParticleSystem>();
+        guns.assistantGunVFX = guns.assistantGun.GetComponent<ParticleSystem>();
 
         UpdateFirerate();
         UpdateFirepower();
@@ -105,8 +108,11 @@ public class PlayerShooting : MonoBehaviour {
     }
 
     //method for a shot
-    void MakeAShot() 
+    void MakeAShot()
     {
+        CreateLazerShot(assistantProjectileObject, guns.assistantGun.transform.position, Vector3.zero);
+        guns.assistantGunVFX.Play();
+
         switch (weaponPower) // according to weapon power 'pooling' the defined anount of projectiles, on the defined position, in the defined rotation
         {
             case 1:

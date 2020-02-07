@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// This script defines 'Enemy's' health and behavior. 
@@ -22,7 +24,7 @@ public class Enemy : MonoBehaviour {
 
     [SerializeField] private Coin coin;
 
-    private float enemySpeed = 5f;
+    public float enemySpeed = 5f;
 
     public AudioClip explosionClip;
 
@@ -68,12 +70,20 @@ public class Enemy : MonoBehaviour {
     //if 'Enemy' collides 'Player', 'Player' gets the damage equal to projectile's damage value
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        try
         {
-            if (Projectile.GetComponent<Projectile>() != null)
-                Player.instance.GetDamage(Projectile.GetComponent<Projectile>().damage);
-            else
+            if (collision.tag == "Player")
+            {
                 Player.instance.GetDamage(1);
+                //if (Projectile.GetComponent<Projectile>() != null)
+                //    Player.instance.GetDamage(Projectile.GetComponent<Projectile>().damage);
+                //else
+                //    Player.instance.GetDamage(1);
+            }
+        }
+        catch (Exception err)
+        {
+            // leave blank
         }
     }
 
