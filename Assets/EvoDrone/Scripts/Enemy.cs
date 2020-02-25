@@ -72,6 +72,14 @@ public class Enemy : MonoBehaviour {
     {
         try
         {
+            if (collision.tag == "SideKick")
+            {
+                SideKick.instance.GetDamage(1);
+                print("testtesttest");
+
+                return;
+            }
+
             if (collision.tag == "Player")
             {
                 Player.instance.GetDamage(1);

@@ -63,11 +63,12 @@ public class GameManager : MonoBehaviour
     private float timer = 0.0f;
 
 
-    public GameObject Score_Count;
-    public GameObject Score_Text;
+    public GameObject Score_Count, Score_Text, PauseButton;
 
     public GameObject Finish_Header;
     public GameObject Finish;
+
+    public GameObject continueButton, currentCoin;
 
     private static Text score;
     public Text Score_Text_Header;
@@ -108,6 +109,14 @@ public class GameManager : MonoBehaviour
         topRight = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
 
         Player.instance.OnGainCoin += HandleGainCoin;
+        try
+        {
+            SideKick.instance.OnGainCoin += HandleGainCoin;
+        }
+        catch (Exception err)
+        {
+            // leave blank
+        }
         Player.instance.OnPlayerDied += HandlePlayerDeath;
         
         wavesLeft = monsterWaveCount;
@@ -128,33 +137,33 @@ public class GameManager : MonoBehaviour
             if (selected_level == 1)
             {
                 timer = 0.0f;
-                wavesLeft = 10;
+                wavesLeft = 30;
             }
             else if (selected_level == 2)
             {
                 timer = 60.0f;
-                wavesLeft = 20;
+                wavesLeft = 40;
                 PlayerPrefs.SetInt("current_level", 2);
                 PlayerPrefs.Save();
             }
             else if (selected_level == 3)
             {
                 timer = 120.0f;
-                wavesLeft = 30;
+                wavesLeft = 50;
                 PlayerPrefs.SetInt("current_level", 3);
                 PlayerPrefs.Save();
             }
             else if (selected_level == 4)
             {
                 timer = 180.0f;
-                wavesLeft = 40;
+                wavesLeft = 60;
                 PlayerPrefs.SetInt("current_level", 4);
                 PlayerPrefs.Save();
             }
             else if (selected_level == 5)
             {
                 timer = 240.0f;
-                wavesLeft = 50;
+                wavesLeft = 70;
                 PlayerPrefs.SetInt("current_level", 5);
                 PlayerPrefs.Save();
             }
@@ -166,6 +175,15 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        if (PlayerPrefs.GetInt("IS_CONTINUE") == 1)
+        {
+            Invoke("StartEnemyGeneration", 5f);
+            InvokeRepeating("GenerateAsteroid", 5f, 10f);
+
+            PlayerPrefs.SetInt("IS_CONTINUE", 0);
+            PlayerPrefs.Save();
+        }
+
         if (detectStartPlaying)
         {
             if (!introAS.isPlaying)
@@ -209,7 +227,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
 
         string playmode = PlayerPrefs.GetString("playmode");
         if (playmode == "endless")
@@ -311,6 +328,9 @@ public class GameManager : MonoBehaviour
                 finishText.text = "LEVEL PASSED";
             }
 
+            continueButton.SetActive(false);
+            currentCoin.SetActive(false);
+
             Invoke("ShowFinishScreen", 3f);
         }
     }
@@ -329,6 +349,7 @@ public class GameManager : MonoBehaviour
         }
         Score_Count.SetActive(false);
         Score_Text.SetActive(false);
+        PauseButton.SetActive(false);
 
         Text scoreFinish = Finish.GetComponentInChildren<Text>();
         scoreFinish.text = score.text;
@@ -534,6 +555,8 @@ public class GameManager : MonoBehaviour
             {
                 Invoke("GenerateBoss", 5f);
             }
+
+            InvokeRepeating("GenerateAsteroid", 5f, 10f);
         }
         else
         {

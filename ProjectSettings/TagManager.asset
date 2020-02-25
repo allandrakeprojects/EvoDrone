@@ -17,6 +17,7 @@ TagManager:
   - Bullet
   - Music
   - Sound
+  - SideKick
   layers:
   - Default
   - TransparentFX
@@ -62,6 +63,9 @@ TagManager:
     locked: 0
   - name: Projectile
     uniqueID: 1111697911
+    locked: 0
+  - name: Bullets
+    uniqueID: 3487772189
     locked: 0
   - name: Enemy
     uniqueID: 1152134415

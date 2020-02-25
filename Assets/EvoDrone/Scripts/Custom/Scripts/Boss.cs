@@ -118,6 +118,14 @@ public class Boss : MonoBehaviour
     //if 'Enemy' collides 'Player', 'Player' gets the damage equal to projectile's damage value
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.tag == "SideKick")
+        {
+            SideKick.instance.GetDamage(1);
+            print("testtesttest");
+
+            return;
+        }
+
         if (collision.tag == "Player")
         {
             if (Projectile.GetComponent<Projectile>() != null)

@@ -11,9 +11,13 @@ public class Player : MonoBehaviour
     public GameObject destructionFX;
     public GameObject Score_Count;
     public GameObject Score_Text;
+    public GameObject player;
 
-    public GameObject GameOver_Header;
-    public GameObject GameOver;
+    public GameObject GameOver_Header, GameOver;
+    public Text currentCoin;
+
+    public GameObject pauseButton, pauseMenu;
+    public Button continueButton;
 
     public delegate void GainCoin();
 
@@ -52,12 +56,15 @@ public class Player : MonoBehaviour
 
         explosionAS.PlayOneShot(explosionClip);
 
-        Destruction();
         ShowDeathScreen();
+        Destruction();
     }
 
     public void ShowDeathScreen()
     {
+        pauseButton.SetActive(false);
+        pauseMenu.SetActive(false);
+
         score = GameObject.Find("Score_Count").GetComponentInChildren<Text>();
         int getCurrentScore = PlayerPrefs.GetInt("score");
         if (Score_Text_Header.text.ToLower() == "new best")
@@ -74,17 +81,42 @@ public class Player : MonoBehaviour
         GameOver_Header.SetActive(true);
         GameOver.SetActive(true);
 
+
         int new_coin = PlayerPrefs.GetInt("coin");
+
+        if (new_coin <= 500)
+        {
+            continueButton.interactable = false;
+        }
+
+        currentCoin.text = "Your Coin: " + FormatCoin(new_coin);
+
         new_coin += int.Parse(score.text);
         PlayerPrefs.SetInt("coin", new_coin);
         PlayerPrefs.Save();
+
+    }
+
+    static string FormatCoin(int num)
+    {
+        if (num >= 100000)
+        {
+            return FormatCoin(num / 1000) + "K";
+        }
+        else if (num >= 1000)
+        {
+            return (num / 1000D).ToString("0.#") + "K";
+        }
+
+        return num.ToString("#,0");
     }
 
     //'Player's' destruction procedure
     void Destruction()
     {
         Instantiate(destructionFX, transform.position, Quaternion.identity); //generating destruction visual effect and destroying the 'Player' object
-        Destroy(gameObject);
+        player.SetActive(false);
+        //Destroy(gameObject);
     }
 
     public void OnTriggerEnter2D(Collider2D other)

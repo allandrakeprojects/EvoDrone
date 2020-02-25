@@ -31,6 +31,14 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) //when a projectile collides with another object
     {
+        if (collision.tag == "SideKick")
+        {
+            SideKick.instance.GetDamage(0);
+            print("testtesttest");
+
+            return;
+        }
+
         if (collision.tag == "Player") //if anoter object is 'player' or 'enemy sending the command of receiving the damage
         {
             Player.instance.GetDamage(0);

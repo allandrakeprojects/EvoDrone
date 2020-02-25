@@ -6,6 +6,9 @@ using UnityEngine;
 /// This script defines the borders of ‘Player’s’ movement. Depending on the chosen handling type, it moves the ‘Player’ together with the pointer.
 /// </summary>
 
+//enumerating 'Player's' handling types
+public enum HandlingType { pointerPosition, offset }
+
 [System.Serializable]
 public class Borders
 {
@@ -14,12 +17,16 @@ public class Borders
     [HideInInspector] public float minX, maxX, minY, maxY;
 }
 
-public class PlayerMoving : MonoBehaviour {
+public class PlayerMoving : MonoBehaviour
+{
+
+    public HandlingType handlingType;
 
     [Tooltip("offset from viewport borders for player's movement")]
     public Borders borders;
     Camera mainCamera;
-    bool controlIsActive = true; 
+    Vector3 distanseToPointer; //distance to 'Player's' touch or mouse position when using handling type 'offset'
+    [HideInInspector] public bool controlIsActive = true;
 
     public static PlayerMoving instance; //unique instance of the script for easy access to the script
 
@@ -39,13 +46,22 @@ public class PlayerMoving : MonoBehaviour {
     {
         if (controlIsActive)
         {
-#if UNITY_STANDALONE || UNITY_EDITOR    //if the current platform is not mobile, setting mouse handling 
+#if UNITY_STANDALONE || UNITY_EDITOR || UNITY_WEBGL   //if the current platform is not mobile, setting mouse handling 
 
             if (Input.GetMouseButton(0)) //if mouse button was pressed       
             {
                 Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition); //calculating mouse position in the worldspace
                 mousePosition.z = transform.position.z;
-                transform.position = Vector3.MoveTowards(transform.position, mousePosition, 30 * Time.deltaTime);
+                if (handlingType == HandlingType.offset) //if handling type 'offset', moving the object considering distance to pointer, if not, moving the object to pointer position
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        distanseToPointer = mousePosition - transform.position;
+                    }
+                    transform.position = mousePosition - distanseToPointer;
+                }
+                else if (handlingType == HandlingType.pointerPosition)
+                    transform.position = Vector3.MoveTowards(transform.position, mousePosition, 30 * Time.deltaTime);
             }
 #endif
 
@@ -56,7 +72,16 @@ public class PlayerMoving : MonoBehaviour {
                 Touch touch = Input.touches[0];
                 Vector3 touchPosition = mainCamera.ScreenToWorldPoint(touch.position);  //calculating touch position in the world space
                 touchPosition.z = transform.position.z;
-                transform.position = Vector3.MoveTowards(transform.position, touchPosition, 30 * Time.deltaTime);
+                if (handlingType == HandlingType.offset) //if handling type 'offset', moving the object considering distance to pointer, if not, moving the object to pointer position
+                {
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        distanseToPointer = touchPosition - transform.position;
+                    }
+                    transform.position = touchPosition - distanseToPointer;
+                }
+                else if (handlingType == HandlingType.pointerPosition)
+                    transform.position = Vector3.MoveTowards(transform.position, touchPosition, 30 * Time.deltaTime);
             }
 #endif
             transform.position = new Vector3    //if 'Player' crossed the movement borders, returning him back 
@@ -69,11 +94,11 @@ public class PlayerMoving : MonoBehaviour {
     }
 
     //setting 'Player's' movement borders according to Viewport size and defined offset
-    void ResizeBorders() 
+    void ResizeBorders()
     {
-        borders.minX = mainCamera.ViewportToWorldPoint(Vector2.zero).x + borders.minXOffset;
+        borders.minX = mainCamera.ViewportToWorldPoint(Vector2.zero).x + borders.minXOffset - 1;
         borders.minY = mainCamera.ViewportToWorldPoint(Vector2.zero).y + borders.minYOffset;
-        borders.maxX = mainCamera.ViewportToWorldPoint(Vector2.right).x - borders.maxXOffset;
+        borders.maxX = mainCamera.ViewportToWorldPoint(Vector2.right).x - borders.maxXOffset + 1;
         borders.maxY = mainCamera.ViewportToWorldPoint(Vector2.up).y - borders.maxYOffset;
     }
 }

@@ -15,7 +15,21 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel(int sceneIndex)
     {
-        StartCoroutine(LoadAsynchronously(sceneIndex));
+        string getPlaymode = PlayerPrefs.GetString("playmode");
+        if (getPlaymode == "story")
+        {
+            int level = PlayerPrefs.GetInt("level");
+            int getSelectLevel = PlayerPrefs.GetInt("selected_level");
+
+            if (level >= getSelectLevel)
+            {
+                StartCoroutine(LoadAsynchronously(sceneIndex));
+            }
+        }
+        else
+        {
+            StartCoroutine(LoadAsynchronously(sceneIndex));
+        }
     }
 
     IEnumerator LoadAsynchronously(int sceneIndex)

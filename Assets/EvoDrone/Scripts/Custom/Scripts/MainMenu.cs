@@ -21,8 +21,20 @@ public class MainMenu : MonoBehaviour
     public Button FirepowerButton;
     public Text FirepowerCoin;
 
+    public Text ScoreText;
+
     public GameObject gameMode;
     public GameObject storyMode;
+    public GameObject droneSelection;
+
+    public GameObject sidekick;
+    public GameObject sidekickFireEffect;
+
+    public GameObject pauseButton, pauseMenu;
+
+    public GameObject player_, sidekick_;
+    public GameObject[] playerScore;
+    public GameObject[] gameOver;
 
     public Button Level_01;
     public Button Level_02;
@@ -30,18 +42,128 @@ public class MainMenu : MonoBehaviour
     public Button Level_04;
     public Button Level_05;
 
+    public Image player;
+    public GameObject playerGame;
+    public Image[] menuShipIcons;
+
+    public Sprite[] menuShipIconsSelected;
+
+    public Sprite[] menuShipIconsNotSelected;
+
+    public Sprite[] menuShipIconsMainMenu;
+
     void Start()
     {
         ShowCoin();
         ShowBest();
         CheckCoin();
         Powerups();
+        SetSelectedDrone();
 
         PlayerPrefs.SetInt("score", 0);
         PlayerPrefs.SetInt("current_level", 1);
+        PlayerPrefs.SetInt("IS_SIDEKICK_ALIVE", 1);
+        PlayerPrefs.SetInt("IS_CONTINUE", 0);
         PlayerPrefs.Save();
 
         levelManager = GameObject.FindObjectOfType<LevelManager>();
+
+        ShowHideSideKick();
+    }
+
+    void Update()
+    {
+        try
+        {
+            if (detectStartCountdown)
+            {
+                DateTime datevalue1 = DateTime.Parse(PlayerPrefs.GetString("waitMinutes"));
+                DateTime datevalue2 = DateTime.Now;
+                TimeSpan timeDifference = datevalue1 - datevalue2;
+                string time = new DateTime(timeDifference.Ticks).ToString("mm:ss");
+                ClaimWaitMinutes.text = time;
+
+                if (int.Parse(time.Replace(":", "")) <= 0000)
+                {
+                    ClaimCoinButton.interactable = true;
+                    detectStartCountdown = false;
+                    ClaimWaitMinutes.text = "Collect";
+                }
+                else
+                {
+                    ClaimCoinButton.interactable = false;
+                }
+            }
+        }
+        catch (Exception err)
+        {
+            // leave blank
+        }
+    }
+
+    public void ShowHideSideKick()
+    {
+        try
+        {
+            if (PlayerPrefs.GetInt("level") >= 2)
+            {
+                sidekick.SetActive(true);
+                sidekickFireEffect.SetActive(true);
+            }
+            else
+            {
+                sidekick.SetActive(false);
+                sidekickFireEffect.SetActive(false);
+            }
+        }
+        catch (Exception err)
+        {
+            // leave blank
+        }
+    }
+
+    public void OpenPauseMenu()
+    {
+        pauseMenu.SetActive(true);
+        StopTheGame();
+    }
+
+    void StopTheGame()
+    {
+        Time.timeScale = 0;
+        PlayerMoving.instance.controlIsActive = false;
+        pauseButton.SetActive(false);
+    }
+
+    public void Continue()
+    {
+
+
+        int new_coin = PlayerPrefs.GetInt("coin");
+        new_coin -= 500 + int.Parse(ScoreText.text);
+        PlayerPrefs.SetInt("coin", new_coin);
+        PlayerPrefs.SetInt("IS_CONTINUE", 1);
+        PlayerPrefs.SetInt("IS_SIDEKICK_ALIVE", 1);
+        PlayerPrefs.Save();
+
+        playerScore[0].SetActive(true);
+        playerScore[1].SetActive(true);
+
+        gameOver[0].SetActive(false);
+        gameOver[1].SetActive(false);
+
+        pauseButton.SetActive(true);
+
+        player_.SetActive(true);
+        sidekick_.SetActive(true);
+    }
+
+    public void ClosePauseMenu()
+    {
+        pauseMenu.SetActive(false);
+        PlayerMoving.instance.controlIsActive = true;
+        Time.timeScale = 1;
+        pauseButton.SetActive(true);
     }
 
     public void StoryModeLevel()
@@ -160,63 +282,45 @@ public class MainMenu : MonoBehaviour
 
     public void PLAYGAME_STORY_02()
     {
-        int level = PlayerPrefs.GetInt("level");
-
-        if (level >= 2)
-        {
-            PlayerPrefs.SetString("playmode", "story");
-            PlayerPrefs.SetInt("selected_level", 02);
-            PlayerPrefs.Save();
-
-            //levelManager.LoadGameAfterDelay();
-        }
+        PlayerPrefs.SetString("playmode", "story");
+        PlayerPrefs.SetInt("selected_level", 02);
+        PlayerPrefs.Save();
     }
 
     public void PLAYGAME_STORY_03()
     {
-        int level = PlayerPrefs.GetInt("level");
-
-        if (level >= 3)
-        {
-            PlayerPrefs.SetString("playmode", "story");
-            PlayerPrefs.SetInt("selected_level", 03);
-            PlayerPrefs.Save();
-
-            //levelManager.LoadGameAfterDelay();
-        }
+        PlayerPrefs.SetString("playmode", "story");
+        PlayerPrefs.SetInt("selected_level", 03);
+        PlayerPrefs.Save();
     }
 
     public void PLAYGAME_STORY_04()
     {
-        int level = PlayerPrefs.GetInt("level");
-
-        if (level >= 4)
-        {
-            PlayerPrefs.SetString("playmode", "story");
-            PlayerPrefs.SetInt("selected_level", 04);
-            PlayerPrefs.Save();
-
-            //levelManager.LoadGameAfterDelay();
-        }
+        PlayerPrefs.SetString("playmode", "story");
+        PlayerPrefs.SetInt("selected_level", 04);
+        PlayerPrefs.Save();
     }
 
     public void PLAYGAME_STORY_05()
     {
-        int level = PlayerPrefs.GetInt("level");
-
-        if (level >= 5)
-        {
-            PlayerPrefs.SetString("playmode", "story");
-            PlayerPrefs.SetInt("selected_level", 05);
-            PlayerPrefs.Save();
-
-            //levelManager.LoadGameAfterDelay();
-        }
+        PlayerPrefs.SetString("playmode", "story");
+        PlayerPrefs.SetInt("selected_level", 05);
+        PlayerPrefs.Save();
     }
 
     public void OpenMainMenu()
     {
         //levelManager.LoadMainMenuAfterDelay();
+    }
+
+    public void OpenDroneSelection()
+    {
+        droneSelection.SetActive(true);
+    }
+
+    public void CloseDroneSelection()
+    {
+        droneSelection.SetActive(false);
     }
 
     public void Quit()
@@ -337,37 +441,6 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        try
-        {
-            if (detectStartCountdown)
-            {
-                DateTime datevalue1 = DateTime.Parse(PlayerPrefs.GetString("waitMinutes"));
-                DateTime datevalue2 = DateTime.Now;
-                TimeSpan timeDifference = datevalue1 - datevalue2;
-                string time = new DateTime(timeDifference.Ticks).ToString("mm:ss");
-                ClaimWaitMinutes.text = time;
-
-                if (int.Parse(time.Replace(":", "")) <= 0000)
-                {
-                    ClaimCoinButton.interactable = true;
-                    detectStartCountdown = false;
-                    ClaimWaitMinutes.text = "Collect";
-                }
-                else
-                {
-                    ClaimCoinButton.interactable = false;
-                }
-            }
-        }
-        catch (Exception err)
-        {
-            // leave blank
-        }
-    }
-
-
     public void UpgradeFirerate()
     {
         int lvl = PlayerPrefs.GetInt("firerate_lvl");
@@ -378,6 +451,7 @@ public class MainMenu : MonoBehaviour
         AddMinusCoin( int.Parse(DecryptCoin(FirerateCoin.text)), 1);
         Powerups();
     }
+
     public void UpgradeFirepower()
     {
         int lvl = PlayerPrefs.GetInt("firepower_lvl");
@@ -402,7 +476,7 @@ public class MainMenu : MonoBehaviour
         {
             float DEFAULT_VAL = 3.3f;
             float LOOP_VAL = .2f;
-            int DEFAULT_COIN = 500;
+            int DEFAULT_COIN = 0;
             int LOOP_COIN = 500;
             if (PlayerPrefs.GetInt("firerate_lvl", 1) == 1)
             {
@@ -433,7 +507,7 @@ public class MainMenu : MonoBehaviour
             int DEFAULT_VAL = 0;
             int LOOP_VAL = 1;
             int DEFAULT_COIN = 0;
-            int LOOP_COIN = 7500;
+            int LOOP_COIN = 2000;
             if (PlayerPrefs.GetInt("firepower_lvl", 1) == 1)
             {
 
@@ -505,7 +579,6 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-
     static string DecryptCoin(string num)
     {
         num = num.ToUpper();
@@ -520,5 +593,100 @@ public class MainMenu : MonoBehaviour
         }
 
         return num;
+    }
+
+    public void SetStartSkin(string mode)
+    {
+        try
+        {
+            switch (mode)
+            {
+                case "short_lazer":
+                    //PlayerShooting.instance.activeShootingMode = ActiveShootingMode.Short_Lazer;
+                    PlayerPrefs.SetInt("SELECTED_DRONE", 1);
+                    DisableMenuIcons();
+                    menuShipIcons[0].GetComponent<Image>().sprite = menuShipIconsSelected[0];
+                    player.GetComponent<Image>().sprite = menuShipIconsMainMenu[0];
+                    break;
+                case "rocket":
+                    //PlayerShooting.instance.activeShootingMode = ActiveShootingMode.Rocket;
+                    PlayerPrefs.SetInt("SELECTED_DRONE", 2);
+                    DisableMenuIcons();
+                    menuShipIcons[1].GetComponent<Image>().sprite = menuShipIconsSelected[1];
+                    player.GetComponent<Image>().sprite = menuShipIconsMainMenu[1];
+                    break;
+                case "swirling":
+                    //PlayerShooting.instance.activeShootingMode = ActiveShootingMode.Swirling;
+                    PlayerPrefs.SetInt("SELECTED_DRONE", 3);
+                    DisableMenuIcons();
+                    menuShipIcons[2].GetComponent<Image>().sprite = menuShipIconsSelected[2];
+                    player.GetComponent<Image>().sprite = menuShipIconsMainMenu[2];
+                    break;
+            }
+
+            PlayerPrefs.Save();
+        }
+        catch (Exception err)
+        {
+            // leave blank
+        }
+    }
+
+    void DisableMenuIcons()
+    {
+        try
+        {
+            menuShipIcons[0].GetComponent<Image>().sprite = menuShipIconsNotSelected[0];
+            menuShipIcons[1].GetComponent<Image>().sprite = menuShipIconsNotSelected[1];
+            menuShipIcons[2].GetComponent<Image>().sprite = menuShipIconsNotSelected[2];
+        }
+        catch (Exception err)
+        {
+            // leave blank
+        }
+    }
+
+    void SetSelectedDrone()
+    {
+        try
+        {
+            int selectedDrone = PlayerPrefs.GetInt("SELECTED_DRONE", 1);
+
+            if (selectedDrone == 1)
+            {
+                DisableMenuIcons();
+                menuShipIcons[0].GetComponent<Image>().sprite = menuShipIconsSelected[0];
+                player.GetComponent<Image>().sprite = menuShipIconsMainMenu[0];
+            }
+            else if (selectedDrone == 2)
+            {
+                DisableMenuIcons();
+                menuShipIcons[1].GetComponent<Image>().sprite = menuShipIconsSelected[1];
+                player.GetComponent<Image>().sprite = menuShipIconsMainMenu[1];
+            }
+            else if (selectedDrone == 3)
+            {
+                DisableMenuIcons();
+                menuShipIcons[2].GetComponent<Image>().sprite = menuShipIconsSelected[2];
+                player.GetComponent<Image>().sprite = menuShipIconsMainMenu[2];
+            }
+        }
+        catch (Exception err)
+        {
+            int selectedDrone = PlayerPrefs.GetInt("SELECTED_DRONE", 1);
+
+            if (selectedDrone == 1)
+            {
+                playerGame.GetComponent<SpriteRenderer>().sprite = menuShipIconsMainMenu[0];
+            }
+            else if (selectedDrone == 2)
+            {
+                playerGame.GetComponent<SpriteRenderer>().sprite = menuShipIconsMainMenu[1];
+            }
+            else if (selectedDrone == 3)
+            {
+                playerGame.GetComponent<SpriteRenderer>().sprite = menuShipIconsMainMenu[2];
+            }
+        }
     }
 }

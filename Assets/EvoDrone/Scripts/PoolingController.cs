@@ -12,7 +12,8 @@ public class PoolingObjects
     public int count;
 }
 
-public class PoolingController : MonoBehaviour {
+public class PoolingController : MonoBehaviour
+{
 
     [Tooltip("Your 'pooling' objects. Add new element and add the prefab to create the object prefab")]
     public PoolingObjects[] poolingObjectsClass;
@@ -41,21 +42,21 @@ public class PoolingController : MonoBehaviour {
             {
                 GameObject newObj = Instantiate(poolingObjectsClass[i].pooledPrefab, transform);
                 pooledObjectsList.Add(newObj);
-                newObj.SetActive(false);                
+                newObj.SetActive(false);
             }
         }
     }
 
-    
+
     public GameObject GetPoolingObject(GameObject prefab)   //Lookikng for the needed object by prefab name and return it
     {
         string cloneName = GetCloneName(prefab);
-        for (int i =0; i<pooledObjectsList.Count; i++)      
+        for (int i = 0; i < pooledObjectsList.Count; i++)
         {
-            if (!pooledObjectsList[i].activeSelf && pooledObjectsList[i].name == cloneName)
-            {                
-                return pooledObjectsList[i];
-            }
+            //if (!pooledObjectsList[i].activeSelf && pooledObjectsList[i].name == cloneName)
+            //{
+            //    return pooledObjectsList[i];
+            //}
         }
         return AddNewObject(prefab);                        //if there is no object needed create the new one
     }
@@ -68,7 +69,7 @@ public class PoolingController : MonoBehaviour {
         return newObj;
     }
 
-    string GetCloneName(GameObject prefab)                  
+    string GetCloneName(GameObject prefab)
     {
         return prefab.name + "(Clone)";
     }
