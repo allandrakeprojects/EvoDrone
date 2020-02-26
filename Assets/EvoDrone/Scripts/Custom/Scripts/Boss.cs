@@ -8,7 +8,7 @@ public class Boss : MonoBehaviour
 {
     #region FIELDS
     [Tooltip("Health points in integer")]
-    public int health;
+    public float health;
 
     [SerializeField] public Transform bulletSpawnspot;
 
@@ -37,6 +37,8 @@ public class Boss : MonoBehaviour
     [SerializeField] private Coin coin;
 
     public AudioClip explosionClip;
+
+    public GameObject healthParent, healthBar;
 
     //private float enemySpeed = 5f;
 
@@ -67,9 +69,26 @@ public class Boss : MonoBehaviour
         InvokeRepeating("ActivateShooting", 1, 1);
     }
 
+    private bool detectContinue = false;
+
     private void Update()
     {
         transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, Time.deltaTime * 3f);
+
+        if (PlayerPrefs.GetInt("IS_PLAYER_ALIVE") == 0)
+        {
+            detectContinue = true;
+            CancelInvoke();
+        }
+
+        if (detectContinue)
+        {
+            if (PlayerPrefs.GetInt("IS_PLAYER_ALIVE") == 1)
+            {
+                detectContinue = false;
+                InvokeRepeating("ActivateShooting", 1, 1);
+            }
+        }
     }
 
     //coroutine making a shot
@@ -89,29 +108,47 @@ public class Boss : MonoBehaviour
         }
     }
 
+    private float healthLeft = 4f;
+    private float newDamage = 0f;
+
     //method of getting damage for the 'Enemy'
     public void GetDamage(int damage)
     {
-        health -= damage;           //reducing health for damage value, if health is less than 0, starting destruction procedure
-        if (health <= 0)
+        try
         {
-            int muted_sound = PlayerPrefs.GetInt("Muted_Sound");
-            if (muted_sound == 1)
+            healthParent.SetActive(true);
+            if (newDamage == 0f)
             {
-                AudioSource.PlayClipAtPoint(explosionClip, transform.position);
+                newDamage = 4.0f / health;
             }
+            healthLeft -= (newDamage * damage);
+            healthBar.transform.localScale = new Vector3(healthLeft, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+            health -= damage;
 
-            if (OnBossDied != null)
+            if (health <= 0)
             {
-                OnBossDied();
-            }
+                int muted_sound = PlayerPrefs.GetInt("Muted_Sound");
+                if (muted_sound == 1)
+                {
+                    AudioSource.PlayClipAtPoint(explosionClip, transform.position);
+                }
 
-            Destruction();
-            return;
-        } 
-        else
+                if (OnBossDied != null)
+                {
+                    OnBossDied();
+                }
+
+                Destruction();
+                return;
+            }
+            else
+            {
+                Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
+            }
+        }
+        catch (Exception err)
         {
-            Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
+            // leave blank
         }
     }
 

@@ -2575,7 +2575,7 @@ PrefabInstance:
     - target: {fileID: 114004447756405556, guid: 01cf4a33fc66cde4abc060ccfeadeb5a,
         type: 3}
       propertyPath: timeForNewPowerup
-      value: 240
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1660094292322712, guid: 01cf4a33fc66cde4abc060ccfeadeb5a, type: 3}
       propertyPath: m_IsActive

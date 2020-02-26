@@ -177,7 +177,10 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("IS_CONTINUE") == 1)
         {
-            Invoke("StartEnemyGeneration", 5f);
+            if (PlayerPrefs.GetInt("IS_BOSS") != 1)
+            {
+                Invoke("StartEnemyGeneration", 5f);
+            }
             InvokeRepeating("GenerateAsteroid", 5f, 10f);
 
             PlayerPrefs.SetInt("IS_CONTINUE", 0);
@@ -400,6 +403,9 @@ public class GameManager : MonoBehaviour
 
     public void GenerateBoss()
     {
+        PlayerPrefs.SetInt("IS_BOSS", 1);
+        PlayerPrefs.Save();
+
         Vector2 bossPos = new Vector2(0, topRight.y);
 
         int selected_level = PlayerPrefs.GetInt("selected_level");

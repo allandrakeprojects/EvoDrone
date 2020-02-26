@@ -64,6 +64,8 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetInt("current_level", 1);
         PlayerPrefs.SetInt("IS_SIDEKICK_ALIVE", 1);
         PlayerPrefs.SetInt("IS_CONTINUE", 0);
+        PlayerPrefs.SetInt("IS_PLAYER_ALIVE", 1);
+        PlayerPrefs.SetInt("IS_BOSS", 0);
         PlayerPrefs.Save();
 
         levelManager = GameObject.FindObjectOfType<LevelManager>();
@@ -137,13 +139,12 @@ public class MainMenu : MonoBehaviour
 
     public void Continue()
     {
-
-
         int new_coin = PlayerPrefs.GetInt("coin");
         new_coin -= 500 + int.Parse(ScoreText.text);
         PlayerPrefs.SetInt("coin", new_coin);
         PlayerPrefs.SetInt("IS_CONTINUE", 1);
         PlayerPrefs.SetInt("IS_SIDEKICK_ALIVE", 1);
+        PlayerPrefs.SetInt("IS_PLAYER_ALIVE", 1);
         PlayerPrefs.Save();
 
         playerScore[0].SetActive(true);
@@ -155,7 +156,10 @@ public class MainMenu : MonoBehaviour
         pauseButton.SetActive(true);
 
         player_.SetActive(true);
-        sidekick_.SetActive(true);
+        if (PlayerPrefs.GetInt("level") >= 2)
+        {
+            sidekick_.SetActive(true);
+        }
     }
 
     public void ClosePauseMenu()

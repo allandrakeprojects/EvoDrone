@@ -116,6 +116,10 @@ public class Player : MonoBehaviour
     {
         Instantiate(destructionFX, transform.position, Quaternion.identity); //generating destruction visual effect and destroying the 'Player' object
         player.SetActive(false);
+
+        PlayerPrefs.SetInt("IS_PLAYER_ALIVE", 0);
+        PlayerPrefs.Save();
+
         //Destroy(gameObject);
     }
 

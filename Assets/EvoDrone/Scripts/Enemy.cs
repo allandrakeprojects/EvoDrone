@@ -28,6 +28,8 @@ public class Enemy : MonoBehaviour {
 
     public AudioClip explosionClip;
 
+    public GameObject healthParent, healthBar;
+
     public void Update()
     {
         transform.Translate(Vector2.down * enemySpeed * Time.deltaTime);
@@ -57,14 +59,32 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    private float healthLeft = 1f;
+    private float newDamage = 0f;
+
     //method of getting damage for the 'Enemy'
     public void GetDamage(int damage) 
     {
-        health -= damage;           //reducing health for damage value, if health is less than 0, starting destruction procedure
-        if (health <= 0)
-            Destruction();
-        else
-            Instantiate(hitEffect,transform.position,Quaternion.identity,transform);
+        try
+        {
+            healthParent.SetActive(true);
+            if (newDamage == 0f)
+            {
+                newDamage = 1.0f / health;
+            }
+            healthLeft -= (newDamage * damage);
+            healthBar.transform.localScale = new Vector3(healthLeft, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+            health -= damage;
+
+            if (health <= 0)
+                Destruction();
+            else
+                Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
+        }
+        catch (Exception err)
+        {
+            // leave blank
+        }
     }    
 
     //if 'Enemy' collides 'Player', 'Player' gets the damage equal to projectile's damage value
