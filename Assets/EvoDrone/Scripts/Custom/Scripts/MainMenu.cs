@@ -26,6 +26,7 @@ public class MainMenu : MonoBehaviour
     public GameObject gameMode;
     public GameObject storyMode;
     public GameObject droneSelection;
+    public GameObject about;
 
     public GameObject sidekick;
     public GameObject sidekickFireEffect;
@@ -122,6 +123,16 @@ public class MainMenu : MonoBehaviour
         {
             // leave blank
         }
+    }
+
+    public void OpenAboutMenu()
+    {
+        about.SetActive(true);
+    }
+
+    public void CloseAboutMenu()
+    {
+        about.SetActive(false);
     }
 
     public void OpenPauseMenu()
@@ -329,7 +340,7 @@ public class MainMenu : MonoBehaviour
 
     public void Quit()
     {
-        //levelManager.LoadQuitAfterDelay();
+        levelManager.LoadQuitAfterDelay();
     }
 
     public void ShowBest()
